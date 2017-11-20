@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const url = require('url');
-const publicPath = '/interface/assets/';
+const publicPath = '/assets/';
 // const publicPath = '/'
 const itemName = 'dist';
 
@@ -17,8 +17,8 @@ module.exports = (options = {}) => {
 		},
 		output: {
 			path: resolve(__dirname, itemName),
-			filename: 'js/[name]-[hash].js?[hash]',
-			chunkFilename: 'js/chunk[id]-[hash].js?[hash]',
+			filename: 'js/[name].js?[hash]',
+			chunkFilename: 'js/chunk[id].js?[hash]',
 			publicPath: publicPath
 		},
 		module: {

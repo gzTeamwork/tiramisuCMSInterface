@@ -1,12 +1,12 @@
 /*
  * @Author: mikey.zhaopeng 
  * @Date: 2017-11-19 00:24:55 
- * @Last Modified by: Azusakuo
- * @Last Modified time: 2017-11-20 18:56:36
+ * @Last Modified by: Zicokuo
+ * @Last Modified time: 2017-11-21 02:45:45
  */
 
 //  开发模式
-let is_dev = 1;
+let is_dev = 0;
 //  根目录
 let rootPath = require('path').resolve(__dirname, 'src');
 //  服务器地址(api接口)
