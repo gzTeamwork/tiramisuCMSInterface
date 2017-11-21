@@ -21,24 +21,28 @@ module.exports = (options = {}) => {
 			chunkFilename: 'js/chunk[id].js?[hash]',
 			publicPath: publicPath
 		},
+		externals: {
+			elementUi: 'element-ui'
+		},
 		module: {
-			rules: [
-				{
+			rules: [{
 					test: /\.vue$/,
 					use: ['vue-loader']
 				},
 				{
 					test: /\.js$/,
-					use: [
-						{
-							loader: 'babel-loader',
-							//  es7 加载
-							options: {
-								presets: [['es2015', { modules: false }]],
-								plugins: ['syntax-dynamic-import']
-							}
+					use: [{
+						loader: 'babel-loader',
+						//  es7 加载
+						options: {
+							presets: [
+								['es2015', {
+									modules: false
+								}]
+							],
+							plugins: ['syntax-dynamic-import']
 						}
-					],
+					}],
 					exclude: /node_modules/
 				},
 				{
@@ -58,24 +62,32 @@ module.exports = (options = {}) => {
 						// },
 						{
 							loader: 'file-loader',
-							options: { name: '[name]_[hash:6].[ext]', outputPath: '.' + publicPath + 'images/' }
+							options: {
+								name: '[name]_[hash:6].[ext]',
+								outputPath: 'images/'
+							}
 						}
 					]
 				},
 				{
 					test: /\.(eot|ttf|woff|woff2)$/,
-					use: [
-						{
-							loader: 'file-loader',
-							options: { name: '[name]_[hash:8].[ext]', outputPath: '.' + publicPath + 'fonts/' }
+					use: [{
+						loader: 'file-loader',
+						options: {
+							name: '[name]_[hash:8].[ext]',
+							outputPath: 'fonts/'
 						}
-					]
+					}]
 				}
 			]
 		},
 		plugins: [
-			new webpack.optimize.CommonsChunkPlugin({ names: ['vendor', 'manifest'] }),
-			new HtmlWebpackPlugin({ template: 'src/index.html' }),
+			new webpack.optimize.CommonsChunkPlugin({
+				names: ['vendor', 'manifest']
+			}),
+			new HtmlWebpackPlugin({
+				template: 'src/index.html'
+			}),
 			new ExtractTextPlugin('styles.css')
 		],
 		resolve: {
@@ -94,12 +106,16 @@ module.exports = (options = {}) => {
 				'/api/': {
 					target: 'http://127.0.0.1:8080',
 					changeOrigin: true,
-					pathRewrite: { '^/api': '' }
+					pathRewrite: {
+						'^/api': ''
+					}
 				},
 				'/server/': {
 					target: 'http://tiramisu.localhost.com',
 					changeOrigin: true,
-					pathRewrite: { '^/server': '' }
+					pathRewrite: {
+						'^/server': ''
+					}
 				}
 			},
 			historyApiFallback: {

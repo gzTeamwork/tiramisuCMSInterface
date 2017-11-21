@@ -7,7 +7,6 @@ import index_router from './apps/website/index_router';
 
 // 	主路由
 const router = new VueRouter({
-	// base: config.is_dev ? '' : '/interface/',
 	path: '*',
 	mode: 'history',
 	routes: [admin_router, index_router],

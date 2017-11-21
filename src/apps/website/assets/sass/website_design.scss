@@ -1,0 +1,149 @@
+@charset 'UTF-8';
+$red: #D00600;
+.designSubmit {
+    background: #eceef1; //  顶部导航
+    & .header {
+        background: #333333;
+        width: 100%;
+        height: 80px;
+    } //  表单主体
+    & .form {
+        margin: auto;
+        width: 1250px;
+        margin-top: 2em;
+        & .part {
+            &-label {
+                color: $red;
+                font-weight: 800;
+                font-size: 1.6em;
+                padding-top: 1.6em;
+                padding-bottom: 0.4em;
+                & .small {
+                    font-weight: 300;
+                    font-size: 0.8em;
+                }
+            }
+            &-body {
+                background: white;
+                width: 100%;
+                padding: 1em;
+            }
+        } //  表格格式
+        & .table {
+            &-tr {
+                cursor: pointer;
+                transition: .5s all;
+                &:hover {
+                    box-shadow: 0 0 $red 5px;
+                }
+                &:first-of-type {
+                    transform: none;
+                }
+                & .table-td-name {
+                    color: white;
+                    font-weight: 800;
+                }
+                &-0 {
+                    .table-td-name {
+                        background: darken(#AEAFBD, 20);
+                    }
+                    background: #AEAFBD;
+                }
+                &-1 {
+                    .table-td-name {
+                        background: darken(#C2E2C5, 20);
+                    }
+                    background: #C2E2C5;
+                }
+                &-2 {
+                    .table-td-name {
+                        background: darken(#89C3EF, 20);
+                    }
+                    background: #89C3EF;
+                }
+                &-3 {
+                    .table-td-name {
+                        background: darken(#FBD9D6, 20);
+                    }
+                    background: #FBD9D6
+                }
+            }
+            &-td {
+                display: flex;
+                align-items: center;
+                min-height: 64px; // border: .5px solid white;
+                padding-left: 1em;
+            }
+        }
+    }
+    & .header {
+        // 表头图片
+        width: 100%;
+    }
+    & .label {
+        color: $red;
+        padding: 2%;
+        font-weight: 800;
+        & .isMust {
+            color: #cccccc;
+            font-weight: 300
+        }
+    }
+    & .input,
+    & .item {
+        &-body {
+            padding: 0 2%;
+        }
+        & input {
+            border: none;
+            border-bottom: .5px solid #ccc;
+            border-radius: 0;
+            padding: 2em;
+            &:focus {
+                border-bottom-color: $red;
+            }
+        }
+    }
+    & .el-textarea__inner {
+        &:focus,
+        &:active {
+            border-color: $red;
+        }
+    }
+    & .el-checkbox__input,& .el-radio__input {
+        &.is-checked {
+            border-color: $red;
+            & .el-checkbox__inner,& .el-radio__inner {
+                background: $red;
+                border-color: $red;
+            }
+            &+.el-checkbox__label,&+.el-radio__label {
+                color: $red;
+            }
+        }
+    }
+    & .el-checkbox.is-bordered.is-checked {
+        border-color: $red;
+    }
+    & .carousel-box {
+        background: white;
+        padding: 1em;
+        border-radius: 4px;
+        border: 2px #666666 solid;
+        transition: all .5s ease;
+        &:hover {
+            box-shadow: 4 4 #666666;
+        }
+    }
+    & .submitBtn{
+        width:256px;
+        padding:1em;
+        font-size:1.4em;
+    }
+    & .active *{
+        transition: .5s all;
+        background:$red!important;
+        color:white;
+    }
+
+}
