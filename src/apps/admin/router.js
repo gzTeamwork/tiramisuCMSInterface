@@ -4,11 +4,11 @@ import Cache from '../../public-resource/modules/cache';
 
 require('./preload');
 
-// 默认路由
+// 默认首页子路由
 let default_router = {
 	title: '管理台首页',
 	url: '/admin/index',
-	path: '/admin*',
+	path: '',
 	name: 'admin_index',
 	component: () => import('./components/home.vue'),
 	meta: {

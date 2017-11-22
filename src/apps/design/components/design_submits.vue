@@ -21,14 +21,14 @@
                         <el-form label-position="left" inline class="table-expand">
                             <span></span>
                             <el-row :gutter="24" align="middle">
-                                <template v-for="item,index in JSON.parse(props.row.from_data)">
+                                <template v-for="(item,index) in JSON.parse(props.row.from_data)">
                                     <template v-if="index == 'vi_item'">
                                         <el-col :span="24">
                                             <h3>{{tableFields.hasOwnProperty(index) ? tableFields[index] : index}}</h3>
                                             <template v-for="viitem in item">
                                                 <el-tag style="margin: 1em;" :type="viitem.checked?'':'danger'">
                                                     <i class="el-icon-circle-check" v-if="viitem.checked"></i>
-                                                    {{viitem.name}}
+                                                    {{viitem.name}} {{viitem.checked+''}}
                                                 </el-tag>
                                             </template>
                                         </el-col>
@@ -41,8 +41,8 @@
                                                     <img :src="item.avatarUrl" alt="微信头像" width="64" height="64">
                                                 </el-col>
                                                 <el-col :span="20">
-                                                    <p>{{item.nickName}}</p>
-                                                    <p>{{item.country}} - {{item.province}} - {{item.city}}</p>
+                                                    <p>{{item.nickName||'网页用户'}}</p>
+                                                    <p>{{item.country||''}} - {{item.province||''}} - {{item.city||''}}</p>
                                                 </el-col>
                                             </el-row>
                                         </el-col>
@@ -63,7 +63,7 @@
                 <el-table-column prop="id" label="序号" width="60"></el-table-column>
                 <el-table-column prop="user_id" label="用户" width="80">
                     <template slot-scope="scope">
-                        {{JSON.parse(scope.row.from_data).userInfo.nickName}}
+                        {{JSON.parse(scope.row.from_data).userInfo.nickName||'网页用户'}}
                     </template>
                 </el-table-column>
                 <el-table-column prop="create_time" label="提交时间" sortable>
@@ -165,10 +165,10 @@ export default {
     };
   },
   beforeMount() {
-    console.log('页面初始化');
+    console.log("页面初始化");
     //  初始化获取数据
-    if(this.listDatas.length<1){
-    this.getTableDataHandler();
+    if (this.listDatas.length < 1) {
+      this.getTableDataHandler();
     }
   },
   Mounted() {

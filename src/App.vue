@@ -6,14 +6,14 @@
     </div>
 </template>
 <script>
-    export default {
-        name: 'app',
-        data () {
-            return {}
-        },
-    }
+export default {
+  name: "app",
+  data() {
+    return {};
+  }
+};
 </script>
 
 <style lang="sass">
-    @import "public-resource/sass/base"
+    @import "./public-resource/sass/tiramisu.scss"
 </style>

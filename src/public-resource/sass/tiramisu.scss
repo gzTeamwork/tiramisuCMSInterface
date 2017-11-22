@@ -1,0 +1,50 @@
+@charset "UTF-8";
+@import "./_color.scss";
+$primaryColor: #0a76be;
+body {
+    margin: 0;
+}
+
+.tiramisu {
+    &-body div {
+        font-family: "monospace", "Microsoft YaHei";
+    } //  文字
+    &-text {
+        &-center {
+            text-align: center;
+        }
+    } //  图标
+    &-icon {
+        font-size: 16px;
+    } //  头像
+    &-avatar {
+        width: auto;
+        margin: auto;
+        &-s {
+            max-width: 64px;
+        }
+        &-m {
+            max-width: 128px;
+        }
+        &-l {
+            max-width: 256px;
+        }
+    }
+    /** 标准化格式 **/
+    & .line {
+        &-label {
+            transition: 0.5s all;
+            color: $primaryColor;
+            padding-top: 1.6rem;
+            padding-top: 0.6rem;
+            &:hover {
+                opacity: 0.9
+            }
+            &:after {
+                display: flex;
+                width: 100%;
+                border-bottom: .5px solid $primaryColor;
+            }
+        }
+    }
+}

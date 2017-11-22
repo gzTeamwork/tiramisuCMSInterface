@@ -1,5 +1,12 @@
 {
-    "gotoSymbolStack.currentStackPosition": 0,
-    "gotoSymbolStack.maxStackPosition": 0,
-    "gotoSymbolStack.filePositionInfo": []
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    "javascript",
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    "html",
+    "vue"
+  ]
 }
