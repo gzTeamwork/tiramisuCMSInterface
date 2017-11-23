@@ -1,47 +1,48 @@
 <!--suppress ALL -->
 <template>
-    <div class="adminMenu">
-        <el-menu default-active="1-1" class="admin-bar" @open="handleOpen" @close="handleClose"
-                 :collapse="isCollapse" :router="true">
-            <h2 align="center">TCMS</h2>
-            <div class="tiramisu-text-center" v-on:click="adminBarWidthToggle">
-                <i v-if="isCollapse" class="el-icon-i--fullscreen tiramisu-icon"></i>
-                <i v-if="!isCollapse" class="el-icon-i--narrow tiramisu-icon"></i>
-            </div>
-            <!--用户窗口模块-->
-            <comp_user_box class="userWindow"></comp_user_box>
-            <!--首页-->
-            <template v-for="(menu,index) in router_menu.children">
-                <el-submenu name="menu.key" :index="index+''" v-if="menu.children" :key="index+''">
-                    <template slot="title">
-                        <span slot="title">{{ menu.title || menu.label || menu.key || '无标题' }}</span>
-                    </template>
-                    <el-menu-item-group :title="menu.title+'功能'">
-                        <template v-for="(submenu,subindex) in menu.children">
-                            <el-menu-item :route="{path:submenu.url}" :index="index+'-'+subindex":key="index+'-'+subindex"
-                                          v-if="submenu.path.length>1">
-                                <i v-if="submenu.icon" :class="submenu.icon"></i>
-                                {{ submenu.title }}
-                            </el-menu-item>
-                        </template>
-                    </el-menu-item-group>
-                </el-submenu>
-                <el-menu-item v-else :route="{path:menu.url}" :index="index+''" :key="index+''">
-                    <i v-if="menu.icon" :class="menu.icon"></i>
-                    {{ menu.title }}
-                </el-menu-item>
+  <div class="adminMenu">
+    <el-menu default-active="1-1" class="admin-bar" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :router="true">
+      <h2 align="center">TCMS</h2>
+      <div class="tiramisu-text-center" v-on:click="adminBarWidthToggle">
+        <i v-if="isCollapse" class="el-icon-i--fullscreen tiramisu-icon"></i>
+        <i v-if="!isCollapse" class="el-icon-i--narrow tiramisu-icon"></i>
+      </div>
+      <!--用户窗口模块-->
+      <comp_user_box class="userWindow"></comp_user_box>
+      <!--首页-->
+      <template v-for="(menu,index) in router_menu.children">
+        <el-submenu name="menu.key" :index="index+''" v-if="menu.children" :key="index+''">
+          <template slot="title">
+            <span slot="title">{{ menu.title || menu.label || menu.key || '无标题' }}</span>
+          </template>
+          <el-menu-item-group :title="menu.title+'功能'">
+            <template v-for="(submenu,subindex) in menu.children">
+              <el-menu-item :route="{path:submenu.url}" :index="index+'-'+subindex" :key="index+'-'+subindex" v-if="submenu.path.length>1">
+                <i v-if="submenu.icon" :class="submenu.icon"></i>
+                {{ submenu.title }}
+              </el-menu-item>
             </template>
-        </el-menu>
-    </div>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-menu-item v-else :route="{path:menu.url}" :index="index+''" :key="index+''">
+          <i v-if="menu.icon" :class="menu.icon"></i>
+          {{ menu.title }}
+        </el-menu-item>
+      </template>
+    </el-menu>
+  </div>
 </template>
 <script>
 import ElMenuItem from "../../../../node_modules/element-ui/packages/menu/src/menu-item.vue";
 import routers from "../router";
 
 let Cache = () => import("../../../public-resource/modules/cache");
-let comp_user_box = () => import( "./user/user_avatar_s.vue");
+let comp_user_box = () => import("./user/user_avatar_s.vue");
 export default {
-  components: { ElMenuItem, comp_user_box },
+  components: {
+    ElMenuItem,
+    comp_user_box
+  },
   name: "adminMenu",
   data() {
     return {

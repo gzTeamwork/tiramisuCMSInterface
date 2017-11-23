@@ -40,7 +40,7 @@
     </div>
 </template>
 <script>
-import avatar from "@/public-resource/images/user.png";
+import avatar from "~/public-resource/images/user.png";
 export default {
   name: "design_user",
   data() {
