@@ -1,6 +1,5 @@
 <template>
     <div id="userEntry" style="max-width: 600px;margin:auto">
-
         <el-form ref="form" :model="loginForm" label-width="120px" v-if="method == 'login'">
             <!--用户登录-->
             <h1 class="tiramisu-text-center">用户登录</h1>
