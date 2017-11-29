@@ -9,14 +9,15 @@ const design_router = {
   },
   children: [
     {
-      title: "首页",
+      title: "小程序统计",
       url: root_url + "/index",
       path: "index",
       name: "design_index",
       component: () => import("./components/design_index.vue"),
       meta: {
-        pageTitle: "首页"
-      }
+        pageTitle: "小程序统计"
+      },
+      isMenu: true
     },
     {
       title: "客户申请",
@@ -26,7 +27,8 @@ const design_router = {
       component: () => import("./components/design_submits.vue"),
       meta: {
         pageTitle: "客户申请"
-      }
+      },
+      isMenu: true
     },
     {
       title: "客户列表",
@@ -36,7 +38,8 @@ const design_router = {
       component: () => import("./components/design_user.vue"),
       meta: {
         pageTitle: "客户列表"
-      }
+      },
+      isMenu: true
     },
     {
       title: "字段设置",
@@ -46,7 +49,8 @@ const design_router = {
       component: () => import("./components/design_config.vue"),
       meta: {
         pageTitle: "字段设置"
-      }
+      },
+      isMenu: true
     },
     {
       title: "首页",

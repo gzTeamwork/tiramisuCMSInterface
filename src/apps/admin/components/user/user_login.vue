@@ -1,5 +1,5 @@
 <template>
-    <div id="userEntry" style="max-width: 600px;margin:auto">
+    <div class="user_login" style="max-width: 600px;margin:auto">
         <el-form ref="form" :model="loginForm" label-width="120px" v-if="method == 'login'">
             <!--用户登录-->
             <h1 class="tiramisu-text-center">用户登录</h1>
@@ -20,36 +20,14 @@
                 <el-button type="primary" v-on:click="navigator('/admin/user/register')">注册</el-button>
             </el-form-item>
         </el-form>
-        <el-form ref="form" :model="registerForm" label-width="120px" v-if="method == 'register'">
-            <!--用户注册-->
-            <h1>用户注册</h1>
-            <el-form-item label="注册账户">
-                <el-input v-model="registerForm.account" placeholder="请输入登录账户(邮箱或手机号).."></el-input>
-            </el-form-item>
-            <el-form-item label="登录密码">
-                <el-input type="password" v-model="registerForm.password" placeholder="请输入至少6位的密码.." min="6"
-                          max="10"></el-input>
-            </el-form-item>
-            <el-form-item label="登录密码">
-                <el-input type="password" v-model="registerForm.repassword" placeholder="请输入至少6位的密码.." min="6"
-                          max="10"></el-input>
-            </el-form-item>
-            <el-form-item label="联系电话">
-                <el-input v-model="registerForm.phone" placeholder="请输入手机号.." min="11" max="=11"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="success" v-on:click="registerSubmit">提交注册</el-button>
-                <el-button type="danger" v-on:click="resetForm">重设</el-button>
-                <el-button type="primary" v-on:click="$router.go(-1)">返回</el-button>
-            </el-form-item>
-        </el-form>
+        
     </div>
 </template>
 <script>
 import _ from "lodash";
 
 export default {
-  name: "userEntry",
+  name: "user_login",
   data() {
     return {
       method: "login",
@@ -124,13 +102,11 @@ export default {
           //  TODO: 用户密码加密传输,不能明码传输
           console.log(res.body.msg);
           if (res.body.code === 1) {
-
             vm.$notify({
               title: "成功",
-              message: res.body.data.nick + "登录成功!",
+              message: res.body.data.nick_name + "登录成功!",
               type: "success"
             });
-
             let user = res.body.data;
             user.isLogin = true;
             vm.$store.dispatch("USER_UPDATE", user);

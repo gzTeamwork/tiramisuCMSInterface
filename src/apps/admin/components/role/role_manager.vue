@@ -15,25 +15,23 @@
 </template>
 
 <script>
-    export default {
-        name: 'role_manager',
-        data() {
-            return {
-                uers_list: {
-                    formData: []
-                },
-                role_list: {
-                    formData: []
-                }
-            }
-        },
-        method:{
-
-        },
-        beforeMount(){
-            // TODO:表单数据初始化
-        }
-    }
+export default {
+  name: "role_manager",
+  data() {
+    return {
+      uers_list: {
+        formData: []
+      },
+      role_list: {
+        formData: []
+      }
+    };
+  },
+  method: {},
+  beforeMount() {
+    // TODO:表单数据初始化
+  }
+};
 </script>
 
 <style scope>

@@ -16,7 +16,7 @@
             <span slot="title">{{ menu.title || menu.label || menu.key || '无标题' }}</span>
           </template>
           <el-menu-item-group :title="menu.title+'功能'">
-            <template v-for="(submenu,subindex) in menu.children">
+            <template v-for="(submenu,subindex) in menu.children" v-if="submenu.isMenu||false">
               <el-menu-item :route="{path:submenu.url}" :index="index+'-'+subindex" :key="index+'-'+subindex" v-if="submenu.path.length>1">
                 <i v-if="submenu.icon" :class="submenu.icon"></i>
                 {{ submenu.title }}
@@ -33,81 +33,88 @@
   </div>
 </template>
 <script>
-import ElMenuItem from "../../../../node_modules/element-ui/packages/menu/src/menu-item.vue";
-import routers from "../router";
+  import ElMenuItem from "../../../../node_modules/element-ui/packages/menu/src/menu-item.vue";
+  import routers from "../router";
+  let _ = require('lodash');
 
-let Cache = () => import("../../../public-resource/modules/cache");
-let comp_user_box = () => import("./user/user_avatar_s.vue");
-export default {
-  components: {
-    ElMenuItem,
-    comp_user_box
-  },
-  name: "adminMenu",
-  data() {
-    return {
-      router_menu: [],
-      isCollapse: false
-    };
-  },
-  beforeMount() {
-    //  挂载前,加载路由设置
-    this.router_menu = routers;
-    console.log(this.router_menu);
-  },
-  methods: {
-    handleOpen: event => {
-      console.log("菜单" + event + "打开");
+  
+  let Cache = () =>
+    import ("../../../public-resource/modules/cache");
+  let comp_user_box = () =>
+    import ("./user/user_avatar_s.vue");
+  export default {
+    components: {
+      ElMenuItem,
+      comp_user_box
     },
-    handleClose: event => {
-      console.log("菜单" + event + "打开");
+    name: "adminMenu",
+    data() {
+      return {
+        router_menu: [],
+        isCollapse: false
+      };
     },
-    adminBarWidthToggle: function() {
-      this.isCollapse = !this.isCollapse;
+    beforeMount() {
+      //  挂载前,加载路由设置
+
+      this.router_menu = routers;
+      this.router_menu.children = _.reverse(this.router_menu.children);
+      console.log(this.router_menu);
     },
-    userLogout: function() {
-      Cache.rem("user_info");
-      this.$router.push("/admin");
+    methods: {
+      handleOpen: event => {
+        console.log("菜单" + event + "打开");
+      },
+      handleClose: event => {
+        console.log("菜单" + event + "打开");
+      },
+      adminBarWidthToggle: function () {
+        this.isCollapse = !this.isCollapse;
+      },
+    },
+    mounted() {
+      console.log("左侧管理菜单加载");
+    },
+    computed: {
+      sortMenu: function () {
+        return _.reverse(this.message)
+      }
     }
-  },
-  mounted() {
-    console.log("左侧管理菜单加载");
-  }
-};
+  };
 </script>
 <style scope lang="scss">
-.admin-bar {
-  transition: all 1s ease;
-  &:not(:hover) {
-    animation-fill-mode: forwards;
-    animation-delay: 3s;
-    animation: myfadeOut 1s;
-    opacity: 0.5;
+  .admin-bar {
+    transition: all 1s ease;
+    &:not(:hover) {
+      animation-fill-mode: forwards;
+      animation-delay: 3s;
+      animation: myfadeOut 1s;
+      opacity: 0.5;
+    }
+    &:hover {
+      opacity: 1;
+    }
   }
-  &:hover {
-    opacity: 1;
+
+  @keyframes myfadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0.5;
+    }
   }
-}
 
-@keyframes myfadeOut {
-  from {
-    opacity: 1;
+  .admin-bar:not(.el-menu--collapse) {
+    width: 300px;
   }
-  to {
-    opacity: 0.5;
+
+  .userWindow {
+    padding: 1em;
+    width: auto;
   }
-}
 
-.admin-bar:not(.el-menu--collapse) {
-  width: 300px;
-}
-
-.userWindow {
-  padding: 1em;
-  width: auto;
-}
-
-.admin-bar.el-menu--collapse .userWindow .nickName {
-  display: none;
-}
+  .admin-bar.el-menu--collapse .userWindow .nickName {
+    display: none;
+  }
 </style>
