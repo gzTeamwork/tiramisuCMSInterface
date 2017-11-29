@@ -1,15 +1,18 @@
 /*
  * @Author: Azusakuo 
  * @Date: 2017-11-14 10:00:21 
- * @Last Modified by: Azusakuo
- * @Last Modified time: 2017-11-29 15:08:19
+ * @Last Modified by: Zicokuo
+ * @Last Modified time: 2017-11-29 22:26:33
  */
 /* eslint-disable no-console */
 //  vue-resource  预发送拦截器
 import Vue from "vue";
 import VueRoute from "vue-router";
 import VueResource from "vue-resource";
-import { Loading, Message } from "element-ui";
+import {
+  Loading,
+  Message
+} from "element-ui";
 
 let Cache = require("../../public-resource/modules/cache");
 
@@ -17,7 +20,7 @@ Vue.use(VueRoute);
 Vue.use(VueResource);
 
 let preLoad = {};
-preLoad.install = function(Vue, options) {
+preLoad.install = function (Vue, options) {
   //  修改页面标题
   let settings = {
     title: "",
@@ -37,7 +40,7 @@ preLoad.install = function(Vue, options) {
   };
 
   Vue.mixin({
-    beforeCreate: function() {
+    beforeCreate: function () {
       //  匹配路由中的页面标题
       let title = "";
       try {
@@ -47,13 +50,13 @@ preLoad.install = function(Vue, options) {
       }
       settings.title = title;
     },
-    created: function() {},
+    created: function () {},
 
-    updated: function() {
+    updated: function () {
       //  更新界面时候更新网页标题
       setDocumentTitle(settings.title);
     },
-    mounted: function() {
+    mounted: function () {
       //  挂载时更新网页标题
       setDocumentTitle(settings.title);
     }
@@ -73,7 +76,6 @@ Vue.http.interceptor.before = (request, next) => {
   next(response => {
     loading.close();
     console.log(response);
-
     try {
       response.body = JSON.parse(response.body);
     } catch (e) {
