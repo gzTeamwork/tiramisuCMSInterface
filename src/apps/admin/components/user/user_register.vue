@@ -32,135 +32,142 @@
   </div>
 </template>
 <script>
-  import _ from "lodash";
+import _ from "lodash";
 
-  export default {
-    name: "user_logout",
-    data() {
-      return {
-        registerForm: {
-          nick_name: "Azusakuo",
-          account: "13828471634",
-          password: "123456",
-          repassword: "123456",
-          phone: "13828471634",
-          email: "21520993@qq.com"
-        }
+export default {
+  name: "user_logout",
+  data() {
+    return {
+      registerForm: {
+        nick_name: "Azusakuo",
+        account: "13828471634",
+        password: "123456",
+        repassword: "123456",
+        phone: "13828471634",
+        email: "21520993@qq.com"
+      }
+    };
+  },
+  // 验证规则
+  rules: {
+    //  昵称
+    nick_name: [
+      {
+        required: true,
+        message: "请输入",
+        trigger: "blur"
+      },
+      {
+        min: 3,
+        max: 5,
+        message: "长度在 3 到 5 个字符",
+        trigger: "blur"
+      }
+    ],
+    account: [{ required: true, message: "请输入内容", trigger: "blur" }],
+    password: [{ required: true, message: "请输入内容", trigger: "blur" }],
+    repassword: [{ required: true, message: "请输入内容", trigger: "blur" }],
+    phone: [{ required: true, message: "请输入内容", trigger: "blur" }],
+    email: [{ required: true, message: "请输入内容", trigger: "blur" }]
+  },
+  components: {},
+  watch: {
+    "form.password": function(password) {
+      this.passwordChange(password);
+    }
+  },
+  mounted() {},
+  methods: {
+    passwordChange: _.debounce(function(e) {
+      console.log("简易加密->" + bpw + ",原密码->" + e);
+      this.loginForm.password = bpw;
+    }, 500),
+    //注册跳转
+    navigator: function(url) {
+      this.method = "register";
+      this.$router.push({
+        path: url
+      });
+    },
+    //表单重设
+    resetForm: function() {
+      this.registerForm = {
+        account: "",
+        password: "",
+        repassword: "",
+        phone: ""
       };
     },
-    // 验证规则
-    rules: {
-      nick_name: [{
-          required: true,
-          message: '请输入',
-          trigger: 'blur'
-        },
-        {
-          min: 3,
-          max: 5,
-          message: '长度在 3 到 5 个字符',
-          trigger: 'blur'
-        },
-      ]
-    },
-    components: {},
-    watch: {
-      "form.password": function (password) {
-        this.passwordChange(password);
-      }
-    },
-    mounted() {},
-    methods: {
-      passwordChange: _.debounce(function (e) {
-        console.log("简易加密->" + bpw + ",原密码->" + e);
-        this.loginForm.password = bpw;
-      }, 500),
-      //注册跳转
-      navigator: function (url) {
-        this.method = "register";
-        this.$router.push({
-          path: url
-        });
-      },
-      //表单重设
-      resetForm: function () {
-        this.registerForm = {
-          account: "",
-          password: "",
-          repassword: "",
-          phone: ""
-        };
-      },
-      //登录表单提交
-      loginSubmit: function (event) {
-        let vm = this;
-        if (event.isTrusted) {
-          //    todo 表单验证,需要分离
-          if (this.loginForm.account.length < 3) {
-            this.$notify({
-              title: "警告",
-              message: "请输入正确的登录账户",
-              type: "warning"
-            });
-            return false;
-          }
-          let api_url = vm.$getUrl("adminUrl") + "user/api_user_login";
-          this.$http
-            .get(api_url, {
-              params: this.loginForm
-            })
-            .then(
-              res => {
-                //  TODO: 用户密码加密传输,不能明码传输
-                console.log(res.body.msg);
-                if (res.body.code === 1) {
-                  vm.$notify({
-                    title: "成功",
-                    message: res.body.data.nick_name + "登录成功!",
-                    type: "success"
-                  });
-                  let user = res.body.data;
-                  user.isLogin = true;
-                  vm.$store.dispatch("USER_UPDATE", user);
-                  vm.$cache("user_info", user);
-                  //  登录成功跳转
-                  vm.$router.push({
-                    path: "/admin/index"
-                  });
-                }
-                console.log(res);
-              },
-              function (res) {
+    //登录表单提交
+    loginSubmit: function(event) {
+      let vm = this;
+      if (event.isTrusted) {
+        //    todo 表单验证,需要分离
+        if (this.loginForm.account.length < 3) {
+          this.$notify({
+            title: "警告",
+            message: "请输入正确的登录账户",
+            type: "warning"
+          });
+          return false;
+        }
+        let api_url = vm.$getUrl("adminUrl") + "user/api_user_login";
+        this.$http
+          .get(api_url, {
+            params: this.loginForm
+          })
+          .then(
+            res => {
+              //  TODO: 用户密码加密传输,不能明码传输
+              console.log(res.body.msg);
+              if (res.body.code === 1) {
                 vm.$notify({
-                  title: "警告",
-                  message: "登录失败,请重试",
-                  type: "warning"
+                  title: "成功",
+                  message: res.body.data.nick_name + "登录成功!",
+                  type: "success"
+                });
+                let user = res.body.data;
+                user.isLogin = true;
+                vm.$store.dispatch("USER_UPDATE", user);
+                vm.$cache("user_info", user);
+                //  登录成功跳转
+                vm.$router.push({
+                  path: "/admin/index"
                 });
               }
-            );
-        }
-      },
-      //注册表单提交
-      registerSubmit: function (event) {
-        let vm = this;
-        vm.$http
-          .get(vm.$getUrl("adminUrl") + "user/api_user_register", {
-            params: vm.registerForm
-          })
-          .then(success_res => {
-            console.log(success_res);
-            if (success_res.body.code == 1) {
-              vm.$message.success(success_res.body.msg);
-            } else {
-              vm.$message.error(success_res.body.msg);
+              console.log(res);
+            },
+            function(res) {
+              vm.$notify({
+                title: "警告",
+                message: "登录失败,请重试",
+                type: "warning"
+              });
             }
-          })
-          .then(error_res => {
-            console.log(error_res);
-          });
+          );
       }
+    },
+    //注册表单提交
+    registerSubmit: function(event) {
+      let vm = this;
+      vm.$http
+        .get(vm.$getUrl("adminUrl") + "user/api_user_register", {
+          params: vm.registerForm
+        })
+        .then(success_res => {
+          console.log(success_res);
+          if (success_res.body.code == 1) {
+            vm.$message.success(success_res.body.msg);
+          } else {
+            vm.$message.error(success_res.body.msg);
+          }
+        })
+        .then(error_res => {
+          console.log(error_res);
+        });
     }
-  };
+  }
+};
 </script>
 <style scoped>
 
