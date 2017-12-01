@@ -22,7 +22,7 @@
                 <template v-for="(item,index) in JSON.parse(props.row.from_data)">
                   <!-- vi设计项 -->
                   <template v-if="index == 'vi_item'">
-                    <el-col :span="24">
+                    <el-col :span="24" v-bind:key="index">
                       <h3>{{tableFields.hasOwnProperty(index) ? tableFields[index] : index}}</h3>
                       <template v-for="viitem in item">
                         <el-tag style="margin: 1em;" :type="viitem.checked?'':'danger'">

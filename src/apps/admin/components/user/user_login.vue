@@ -98,27 +98,33 @@ export default {
           return false;
         }
         let api_url = vm.$getUrl("adminUrl") + "user/api_user_login";
-        this.$http.get(api_url, { params: this.loginForm }).then(res => {
-          //  TODO: 用户密码加密传输,不能明码传输
-          console.log(res.body.msg);
-          if (res.body.code === 1) {
-            vm.$notify({
-              title: "成功",
-              message: res.body.data.nick_name + "登录成功!",
-              type: "success"
-            });
-            let user = res.body.data;
-            user.isLogin = true;
+        this.$http.get(api_url, { params: this.loginForm }).then(
+          success_res => {
+            //  TODO: 用户密码加密传输,不能明码传输
+            console.log(success_res.body.msg);
+            if (success_res.body.code === 1) {
+              vm.$notify({
+                title: "成功",
+                message: success_res.body.data.nick_name + "登录成功!",
+                type: "success"
+              });
+              let user = success_res.body.data;
+              user.isLogin = true;
+              vm.$store.dispatch("USER_UPDATE", user);
+              vm.$cache("user_info", user);
+              //  登录成功跳转
+              vm.$router.push({ path: "/admin/index" });
+            }
+            console.log(success_res);
+          },
+          error_res => {
+            console.log(error_res);
+            let user = { isLogin: false };
             vm.$store.dispatch("USER_UPDATE", user);
             vm.$cache("user_info", user);
-            //  登录成功跳转
-            vm.$router.push({ path: "/admin/index" });
+            vm.$notify({ title: "警告", message: "登录失败,请重试", type: "warning" });
           }
-          console.log(res);
-        },
-        function(res) {
-          vm.$notify({ title: "警告", message: "登录失败,请重试", type: "warning" });
-        });
+        );
       }
     },
     //注册表单提交

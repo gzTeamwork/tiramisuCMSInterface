@@ -31,10 +31,6 @@ export default {
           type: "warning"
         })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "登出成功!"
-          });
           vm.$cache("userInfo", "", "", true);
           let userInfo = vm.$cache("user_info");
           userInfo.isLogin = false;
@@ -47,6 +43,10 @@ export default {
             .then(success_res => {
               console.log(success_res);
             });
+          this.$message({
+            type: "success",
+            message: "登出成功!"
+          });
         })
         .catch(() => {
           this.$message({

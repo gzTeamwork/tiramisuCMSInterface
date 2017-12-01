@@ -1,29 +1,15 @@
-/* * @Author: Zicokuo * @Date: 2017-11-29 22:29:38 * @Last Modified by: Zicokuo * @Last Modified time: 2017-11-30 01:57:56
+/* * @Author: Azusakuo * @Date: 2017-12-01 14:17:36 * @Last Modified by: Azusakuo * @Last Modified time: 2017-12-01 14:34:22
 */
+
 <template>
-  <div class="user_logout" style="max-width: 600px;margin:auto">
-    <el-form ref="form" :model="registerForm" label-width="120px">
+  <div class="user_register_form" style="max-width: 600px;margin:auto">
+    <el-form ref="user_register_form" status-icon :model="registerForm" :rules="rules" label-width="120px">
       <!--用户注册-->
-      <h1>用户注册</h1>
-      <el-form-item label="注册账户" prop="nick_name">
-        <el-input v-model="registerForm.account" placeholder="可以输入登录账户(邮箱或手机号).."></el-input>
-      </el-form-item>
-      <el-form-item label="用户昵称">
-        <el-input v-model="registerForm.nick_name" placeholder="我们怎么称呼你?"></el-input>
-      </el-form-item>
-      <el-form-item label="用户邮箱">
-        <el-input v-model="registerForm.email" placeholder="常用邮箱.."></el-input>
-      </el-form-item>
-      <el-form-item label="登录密码">
-        <el-input type="password" v-model="registerForm.password" placeholder="请输入至少6位的密码.." min="6" max="10"></el-input>
-      </el-form-item>
-      <el-form-item label="登录密码">
-        <el-input type="password" v-model="registerForm.repassword" placeholder="请输入至少6位的密码.." min="6" max="10"></el-input>
-      </el-form-item>
-      <el-form-item label="联系电话">
-        <el-input v-model="registerForm.phone" placeholder="请输入手机号.." min="11" max="=11"></el-input>
-      </el-form-item>
-      <el-form-item>
+      <h1 style="text-align:center;">用户注册</h1>
+      <el-form-item v-for="(item,index) in registerItems" :key="index" :label="item.label" :prop="item.key">
+        <el-input v-model="registerForm[item.key]" :placeholder="item.placeholder||''" auto-complete="off"></el-input>
+      </el-form-item> 
+      <el-form-item>    
         <el-button type="success" v-on:click="registerSubmit">提交注册</el-button>
         <el-button type="danger" v-on:click="resetForm">重设</el-button>
         <el-button type="primary" v-on:click="$router.go(-1)">返回</el-button>
@@ -33,42 +19,92 @@
 </template>
 <script>
 import _ from "lodash";
-
+let validateCreater = require("../../common/validate_creater");
 export default {
-  name: "user_logout",
+  name: "user_register_form",
   data() {
+    var checkAge = (rule, value, callback) => {
+      callback(new Error(value));
+    };
     return {
       registerForm: {
-        nick_name: "Azusakuo",
-        account: "13828471634",
-        password: "123456",
-        repassword: "123456",
-        phone: "13828471634",
-        email: "21520993@qq.com"
+        nick_name: "",
+        account: "",
+        password: "",
+        repassword: "",
+        phone: "",
+        email: ""
+      },
+      registerItems: [
+        {
+          key: "nick_name",
+          label: "用户昵称",
+          placeholder: "我们怎么称呼你?"
+        },
+        {
+          key: "account",
+          label: "登录账户",
+          placeholder: "可以输入登录账户(邮箱或手机号).."
+        },
+        {
+          key: "password",
+          label: "登录密码",
+          placeholder: ""
+        },
+        {
+          key: "repassword",
+          label: "再次输入密码",
+          placeholder: ""
+        },
+        {
+          key: "phone",
+          label: "联系方式",
+          placeholder: "建议输入11位手机号.."
+        },
+        {
+          key: "email",
+          label: "邮箱",
+          placeholder: "常用邮箱.."
+        }
+      ],
+      // 验证规则
+      rules: {
+        //  昵称
+        nick_name: [
+          validateCreater.required("昵称是必须的"),
+          validateCreater.between(3, 20)
+        ],
+        account: [
+          validateCreater.required("账户是必须的"),
+          validateCreater.between(3, 20)
+        ],
+        password: [
+          validateCreater.required("密码是必须的"),
+          validateCreater.between(3, 16)
+        ],
+        repassword: [
+          validateCreater.required("请再次输入相同密码进行确认"),
+          validateCreater.between(3, 16),
+          validateCreater.custom((r, v, c) => {
+            if (v !== this.registerForm.password) {
+              c(new Error("两次输入的密码不相同"));
+            }
+          })
+        ],
+        phone: [
+          validateCreater.required("联系号码是必须的"),
+          validateCreater.between(8, 11),
+          validateCreater.datatype("number")
+        ],
+        email: [
+          {
+            required: true,
+            message: "请输入内容",
+            trigger: "blur"
+          }
+        ]
       }
     };
-  },
-  // 验证规则
-  rules: {
-    //  昵称
-    nick_name: [
-      {
-        required: true,
-        message: "请输入",
-        trigger: "blur"
-      },
-      {
-        min: 3,
-        max: 5,
-        message: "长度在 3 到 5 个字符",
-        trigger: "blur"
-      }
-    ],
-    account: [{ required: true, message: "请输入内容", trigger: "blur" }],
-    password: [{ required: true, message: "请输入内容", trigger: "blur" }],
-    repassword: [{ required: true, message: "请输入内容", trigger: "blur" }],
-    phone: [{ required: true, message: "请输入内容", trigger: "blur" }],
-    email: [{ required: true, message: "请输入内容", trigger: "blur" }]
   },
   components: {},
   watch: {
@@ -98,58 +134,19 @@ export default {
         phone: ""
       };
     },
-    //登录表单提交
-    loginSubmit: function(event) {
-      let vm = this;
-      if (event.isTrusted) {
-        //    todo 表单验证,需要分离
-        if (this.loginForm.account.length < 3) {
-          this.$notify({
-            title: "警告",
-            message: "请输入正确的登录账户",
-            type: "warning"
-          });
-          return false;
-        }
-        let api_url = vm.$getUrl("adminUrl") + "user/api_user_login";
-        this.$http
-          .get(api_url, {
-            params: this.loginForm
-          })
-          .then(
-            res => {
-              //  TODO: 用户密码加密传输,不能明码传输
-              console.log(res.body.msg);
-              if (res.body.code === 1) {
-                vm.$notify({
-                  title: "成功",
-                  message: res.body.data.nick_name + "登录成功!",
-                  type: "success"
-                });
-                let user = res.body.data;
-                user.isLogin = true;
-                vm.$store.dispatch("USER_UPDATE", user);
-                vm.$cache("user_info", user);
-                //  登录成功跳转
-                vm.$router.push({
-                  path: "/admin/index"
-                });
-              }
-              console.log(res);
-            },
-            function(res) {
-              vm.$notify({
-                title: "警告",
-                message: "登录失败,请重试",
-                type: "warning"
-              });
-            }
-          );
-      }
-    },
     //注册表单提交
     registerSubmit: function(event) {
       let vm = this;
+      //  表单验证
+      vm.$refs["user_register_form"].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+      return;
       vm.$http
         .get(vm.$getUrl("adminUrl") + "user/api_user_register", {
           params: vm.registerForm
