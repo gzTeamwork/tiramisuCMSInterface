@@ -32,7 +32,8 @@ const admin_router = {
   beforeEnter: (to, from, next) => {
     let user = Cache.get("user_info");
     //  匹配用户登录路由
-    if (pathFilterRegExp.test(to.path) || user.isLogin === true) {
+    if (pathFilterRegExp.test(to.path) || user !== null) {
+      console.log("获取缓存用户" + user);
       next();
     } else {
       next("/admin/user/login");

@@ -7,7 +7,7 @@
       <!--用户注册-->
       <h1 style="text-align:center;">用户注册</h1>
       <el-form-item v-for="(item,index) in registerItems" :key="index" :label="item.label" :prop="item.key">
-        <el-input v-model="registerForm[item.key]" :placeholder="item.placeholder||''" auto-complete="off"></el-input>
+        <el-input v-model="registerForm[item.key]" :placeholder="item.placeholder||''" auto-complete="off" :type="item.inputType||'text'"></el-input>
       </el-form-item> 
       <el-form-item>    
         <el-button type="success" v-on:click="registerSubmit">提交注册</el-button>
@@ -39,32 +39,38 @@ export default {
         {
           key: "nick_name",
           label: "用户昵称",
-          placeholder: "我们怎么称呼你?"
+          placeholder: "我们怎么称呼你?",
+          inputType: "text"
         },
         {
           key: "account",
           label: "登录账户",
-          placeholder: "可以输入登录账户(邮箱或手机号).."
+          placeholder: "可以输入登录账户(邮箱或手机号)..",
+          inputType: "text"
         },
         {
           key: "password",
           label: "登录密码",
-          placeholder: ""
+          placeholder: "",
+          inputType: "password"
         },
         {
           key: "repassword",
           label: "再次输入密码",
-          placeholder: ""
+          placeholder: "",
+          inputType: "password"
         },
         {
           key: "phone",
           label: "联系方式",
-          placeholder: "建议输入11位手机号.."
+          placeholder: "建议输入11位手机号..",
+          inputType: "text"
         },
         {
           key: "email",
           label: "邮箱",
-          placeholder: "常用邮箱.."
+          placeholder: "常用邮箱..",
+          inputType: "email"
         }
       ],
       // 验证规则
@@ -88,21 +94,17 @@ export default {
           validateCreater.custom((r, v, c) => {
             if (v !== this.registerForm.password) {
               c(new Error("两次输入的密码不相同"));
+            } else {
+              c();
             }
           })
         ],
         phone: [
           validateCreater.required("联系号码是必须的"),
           validateCreater.between(8, 11),
-          validateCreater.datatype("number")
+          validateCreater.isPhone()
         ],
-        email: [
-          {
-            required: true,
-            message: "请输入内容",
-            trigger: "blur"
-          }
-        ]
+        email: [validateCreater.required("请输入邮箱..")]
       }
     };
   },
@@ -149,7 +151,7 @@ export default {
       return;
       vm.$http
         .get(vm.$getUrl("adminUrl") + "user/api_user_register", {
-          params: vm.registerForm
+          params: _.partition(vm.registerItems, "val")
         })
         .then(success_res => {
           console.log(success_res);
